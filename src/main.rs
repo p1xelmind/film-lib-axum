@@ -1,6 +1,9 @@
-use axum::{routing::get, Router};
+use axum::routing::get;
+use axum::routing::Router;
+use axum::serve;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
+
 
 #[tokio::main]
 async fn main(){
@@ -14,7 +17,7 @@ async fn main(){
         .await
         .unwrap();
 
-    axum::serve(listener, app)
+    serve::serve(listener, app)
         .await
         .unwrap();
 }
