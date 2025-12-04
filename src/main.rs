@@ -1,9 +1,17 @@
 use axum::routing::get;
 use axum::routing::Router;
 use axum::serve;
+use axum::Json;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
+use serde::Serialize;
 
+
+#[derive(Serialize)]
+struct User {
+    name: String,
+    age: u8,
+}
 
 #[tokio::main]
 async fn main(){
