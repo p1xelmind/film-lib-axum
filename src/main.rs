@@ -16,7 +16,8 @@ struct User {
 #[tokio::main]
 async fn main(){
     let app = Router::new()
-        .route("/", get(root));
+        .route("/", get(root))
+        .route("/user", get(get_user));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     println!("Server running on http://{addr}");
@@ -32,4 +33,13 @@ async fn main(){
 
 async fn root() -> &'static str {
     "Hello, world!"
+}
+
+async fn get_user() -> Json<User> {
+    let user = User {
+        name: "Ivan".to_string(),
+        age: 20,
+    };
+
+    Json(user)
 }
