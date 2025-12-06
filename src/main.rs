@@ -1,13 +1,15 @@
 use axum::routing::get;
+use axum::routing::post;
 use axum::routing::Router;
 use axum::serve;
 use axum::Json;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
 use serde::Serialize;
+use serde::Deserialize;
 
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 struct User {
     name: String,
     age: u8,
@@ -17,7 +19,8 @@ struct User {
 async fn main(){
     let app = Router::new()
         .route("/", get(root))
-        .route("/user", get(get_user));
+        .route("/user", get(get_user).post(create_user));
+        
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     println!("Server running on http://{addr}");
@@ -43,3 +46,8 @@ async fn get_user() -> Json<User> {
 
     Json(user)
 }
+
+async fn create_user(Json(user): Json<User>) -> &'static str {
+    println!("Получен пользователь: {} {}", user.name, user.age);
+    "User received!"
+} 
